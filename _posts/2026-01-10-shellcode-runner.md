@@ -55,6 +55,8 @@ The malware relies on process injection to write the shellcode into memory regio
 
 First, we need to define a target process — for example, notepad.exe — and then use Windows APIs to find its PID. With the PID in hand, we can allocate memory inside that process.
 
+![COMINGSOON]({{ "/assets/img/comingsoon.png" | relative_url }})
+
 ```cpp
 
 ```
