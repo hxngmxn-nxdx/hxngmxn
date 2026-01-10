@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shellcode Runner C++, basics | hxngmxn</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+  </head>
+  <body class="layout-post">
+    <header class="site-header">
+  <div class="header-inner">
+    <img class="site-logo" src="/assets/img/hxngmxn.png" alt="hxngmxn logo">
+    <div class="site-subtitle">hxngmxn | malware · reverse engineering · threat hunting</div>
+    <nav class="site-nav">
+  <a href="/">Home</a>
+  <a href="/posts/">Posts</a>
+  <a href="/projects/">Projects</a>
+</nav>
+
+  </div>
+</header>
+
+    <div class="layout layout-post">
+  <main class="content content-full">
+    <article class="post">
+      <header class="post-header">
+        <h1 class="post-title">Shellcode Runner C++, basics</h1>
+        <div class="post-meta">2026-01-10</div>
+        
+        <div class="post-project">project: Sliver C2 & Fileless Malware</div>
+        
+      </header>
+      <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>Hey everyone,</p>
+
+<p>I want to start this post by making one thing very clear: I’m not going to show how to build a fully functional shellcode runner. The goal here is to walk you through the methods I used to create mine, along with a few C++ examples demonstrating how to apply these techniques.</p>
+
+<h2 id="system-call-obfuscation">System Call Obfuscation</h2>
+
+<p>System Call Obfuscation, also known as D/Invoke in C#, is a method that can be widely used to call Windows functions at runtime.</p>
+
+<p>Abaixo, um exemplo dessa técnica aplicada a função “CreateToolhelp32Snapshot”, usada principalmente na técnica de Process Injection</p>
+
+<p><code class="language-plaintext highlighter-rouge">C++</code></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// CreateToolhelp32Snapshot</span>
+<span class="k">typedef</span> <span class="nf">HANDLE</span><span class="p">(</span><span class="n">WINAPI</span><span class="o">*</span> <span class="n">myToolSnapshot</span><span class="p">)(</span><span class="n">DWORD</span><span class="p">,</span> <span class="n">DWORD</span><span class="p">);</span>
+
+<span class="n">HMODULE</span> <span class="n">kernel32dll</span> <span class="o">=</span> <span class="n">LoadLibraryA</span><span class="p">(</span><span class="s">"kernel32.dll"</span><span class="p">);</span>
+
+<span class="n">myToolSnapshot</span> <span class="n">My_Snapshot</span> <span class="o">=</span> <span class="p">(</span><span class="n">myToolSnapshot</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">kernel32dll</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCSTR</span><span class="p">)</span><span class="s">"CreateToolhelp32Snapshot"</span><span class="p">);</span>
+
+<span class="n">My_Snapshot</span><span class="p">(</span><span class="n">TH32CS_SNAPPROCESS</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+</code></pre></div></div>
+<h3 id="what-this-is-doing">What this is doing</h3>
+
+<ul>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">typedef ... myToolSnapshot</code></strong><br />
+Defines a <em>function pointer type</em> that matches the original <code class="language-plaintext highlighter-rouge">CreateToolhelp32Snapshot</code> signature.<br />
+This matters because when calling a function via pointer, the <strong>parameter types</strong> and <strong>calling convention</strong> (<code class="language-plaintext highlighter-rouge">WINAPI</code>) must match exactly.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">LoadLibraryA("kernel32.dll")</code></strong><br />
+Loads <code class="language-plaintext highlighter-rouge">kernel32.dll</code> and returns a module handle (<code class="language-plaintext highlighter-rouge">HMODULE</code>). If the module is already loaded, Windows typically just increments its reference count.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">GetProcAddress(kernel32dll, "CreateToolhelp32Snapshot")</code></strong><br />
+Resolves the <strong>address</strong> of <code class="language-plaintext highlighter-rouge">CreateToolhelp32Snapshot</code> at runtime and returns it as a raw pointer, which is then cast to <code class="language-plaintext highlighter-rouge">myToolSnapshot</code>.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">My_Snapshot(TH32CS_SNAPPROCESS, 0)</code></strong><br />
+Requests a snapshot of the current process list. When using <code class="language-plaintext highlighter-rouge">TH32CS_SNAPPROCESS</code>, the second argument (<code class="language-plaintext highlighter-rouge">th32ProcessID</code>) is effectively <strong>not used</strong>, so passing <code class="language-plaintext highlighter-rouge">0</code> is standard in examples.</p>
+  </li>
+</ul>
+
+<h4 id="reference">Reference</h4>
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot">CreateToolhelp32Snapshot (Microsoft Docs)</a></li>
+</ul>
+
+<h2 id="process-injection">Process Injection</h2>
+
+<p>The malware relies on process injection to write the shellcode into memory regions of another process, such as notepad.exe, svchost.exe, chrome.exe, etc.</p>
+
+<p>First, we need to define a target process — for example, notepad.exe — and then use Windows APIs to find its PID. With the PID in hand, we can allocate memory inside that process.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<h2 id="request-for-shellcode">Request for Shellcode</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+      </div>
+    </article>
+  </main>
+</div>
+
+    <footer class="site-footer">
+  <div class="footer-inner">Copyright 2026 hxngmxn</div>
+</footer>
+
+  </body>
+</html>

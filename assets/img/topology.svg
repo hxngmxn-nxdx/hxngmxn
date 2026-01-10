@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="Lab topology: Windows host and Ubuntu VPS">
+  <defs>
+    <style>
+      .bg { fill: #0b0b0b; }
+      .panel { fill: #0e0e0e; stroke: #1c1c1c; stroke-width: 2; rx: 16; ry: 16; }
+      .title { fill: #cfcfcf; font: 700 18px 'IBM Plex Mono', 'Fira Code', monospace; letter-spacing: 0.10em; }
+      .text  { fill: #9a9a9a; font: 14px 'IBM Plex Mono', 'Fira Code', monospace; }
+      .mono  { fill: #cfcfcf; font: 14px 'IBM Plex Mono', 'Fira Code', monospace; }
+      .line  { stroke: #2a2a2a; stroke-width: 2; }
+      .dash  { stroke: #2a2a2a; stroke-width: 2; stroke-dasharray: 8 8; }
+      .link  { fill: #8fbaff; font: 14px 'IBM Plex Mono', 'Fira Code', monospace; }
+      .small { fill: #9a9a9a; font: 12px 'IBM Plex Mono', 'Fira Code', monospace; letter-spacing: 0.12em; text-transform: uppercase; }
+    </style>
+
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2a2a2a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="420"/>
+
+  <!-- Top DNS note -->
+  <text class="small" x="600" y="48" text-anchor="middle">DNS</text>
+  <text class="text" x="600" y="74" text-anchor="middle">domain.tld  →  VPS public IP</text>
+  <line class="dash" x1="600" y1="92" x2="600" y2="128" marker-end="url(#arrow)"/>
+
+  <!-- Left panel: Windows -->
+  <rect class="panel" x="90" y="150" width="420" height="210"/>
+  <text class="title" x="130" y="190">WINDOWS HOST</text>
+  <text class="text"  x="130" y="214">(VM or physical machine)</text>
+
+  <line class="line" x1="130" y1="232" x2="470" y2="232"/>
+
+  <text class="mono" x="130" y="262">• runs the sample/loader</text>
+  <text class="mono" x="130" y="288">• observes runtime behavior</text>
+  <text class="text" x="130" y="318">optional: local DNS / hosts override</text>
+
+  <!-- Right panel: Ubuntu VPS -->
+  <rect class="panel" x="690" y="150" width="420" height="210"/>
+  <text class="title" x="730" y="190">UBUNTU VPS</text>
+  <text class="text"  x="730" y="214">(C2 / listener)</text>
+
+  <line class="line" x1="730" y1="232" x2="1070" y2="232"/>
+
+  <text class="mono" x="730" y="262">• public IP + domain</text>
+  <text class="mono" x="730" y="288">• TLS certificates (Let’s Encrypt)</text>
+  <text class="mono" x="730" y="314">• receives HTTPS connections</text>
+
+  <!-- Connection arrows -->
+  <line class="line" x1="510" y1="240" x2="690" y2="240" marker-end="url(#arrow)"/>
+  <line class="line" x1="690" y1="270" x2="510" y2="270" marker-end="url(#arrow)"/>
+
+  <!-- Center label -->
+  <rect x="520" y="204" width="160" height="52" rx="12" ry="12" fill="#0b0b0b" stroke="#1c1c1c" stroke-width="2"/>
+  <text class="link" x="600" y="235" text-anchor="middle">HTTPS / TLS</text>
+
+  <!-- Footer note -->
+  <text class="text" x="600" y="392" text-anchor="middle">
+    High-level lab topology (intentionally omits operational endpoint details).
+  </text>
+</svg>

@@ -1,0 +1,401 @@
+:root {
+  --bg: #0b0b0b;
+  --text: #cfcfcf;
+  --muted: #9a9a9a;
+  --link: #8fbaff;
+  --link-hover: #b7d5ff;
+  --border: #1c1c1c;
+  --sidebar-width: 230px;
+  --gap: 2.5rem;
+  --container-width: 1120px;
+  --gutter: 2rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "IBM Plex Mono", "Fira Code", "Source Code Pro", monospace;
+  line-height: 1.65;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+.site-header {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 2rem var(--gutter);
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-logo {
+  width: min(520px, 90vw);
+  height: auto;
+}
+
+.site-subtitle {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+}
+
+.site-nav {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+.site-nav a {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.site-nav a:hover {
+  border-color: var(--link);
+  color: var(--link-hover);
+}
+
+.site-footer {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 1.5rem var(--gutter) 2.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.home {
+  min-height: 60vh;
+}
+
+.layout {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 2.5rem var(--gutter) 3.5rem;
+  display: flex;
+  gap: var(--gap);
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: transparent;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.sidebar .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile {
+  margin-top: 0.5rem;
+}
+
+.nickname {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.description {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  max-width: 200px;
+  text-transform: lowercase;
+}
+
+.social {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.social a {
+  font-size: 0.9rem;
+  text-transform: lowercase;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding-left: var(--gap);
+  border-left: 1px solid var(--border);
+}
+
+.layout-post {
+  justify-content: center;
+}
+
+.layout-post .content {
+  padding-left: 0;
+  border-left: none;
+  max-width: 760px;
+}
+
+.section-title {
+  margin: 0 0 1.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.post-item {
+  padding-bottom: 1.5rem;
+}
+
+.post-row {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.post-date {
+  color: var(--link);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+}
+
+.post-link {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.post-link:hover {
+  color: var(--link-hover);
+}
+
+.post-meta {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.post-project {
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.post-separator {
+  margin-top: 0.8rem;
+  height: 1px;
+  background: var(--border);
+}
+
+.post {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.post-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.7rem;
+}
+
+.post-content {
+  margin-top: 1.5rem;
+}
+
+.post-content p {
+  margin-bottom: 1.3rem;
+}
+
+.post-content ul {
+  padding-left: 1.5rem;
+}
+
+.project-group {
+  margin-bottom: 2rem;
+}
+
+.project-title {
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Terminal-style code blocks */
+.post-content pre {
+  margin: 1.8rem 0;
+  padding: 1.2rem 1.4rem;
+  background: #0e0e0e;
+  border-left: 3px solid #2a2a2a;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.post-content pre.ascii-diagram {
+  font-size: clamp(0.75rem, 0.9vw, 0.95rem);
+  line-height: 1.15;
+  padding: 0.75rem 0.9rem;
+}
+
+.post-content img[alt="Lab topology"] {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem 0;
+}
+
+/* Keep code mono (body already is mono), but improve inline code visibility */
+.post-content code {
+  font-family: inherit;
+}
+
+.post-content :not(pre) > code {
+  background: #0e0e0e;
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.95em;
+  color: #e0e0e0;
+}
+
+/* Section hierarchy */
+.post-content h2 {
+  margin-top: 4rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.6rem;
+  font-size: 1.25rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.post-content h3 {
+  margin-top: 2.8rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+@media (max-width: 900px) {
+  .site-header {
+    padding: 1.5rem var(--gutter);
+  }
+
+  .site-subtitle {
+    letter-spacing: 0.12em;
+  }
+
+  .layout {
+    flex-direction: column;
+    padding: 2rem var(--gutter) 3rem;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .content {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+/* Markdown horizontal rule (---) */
+.post-content hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid var(--border);
+  margin: 2.2rem 0;
+}
+
+.post-content hr {
+  display: none;
+}
+
+
+
+@media (max-width: 600px) {
+  .site-logo {
+    width: min(360px, 92vw);
+  }
+
+  .post-content pre {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+}
