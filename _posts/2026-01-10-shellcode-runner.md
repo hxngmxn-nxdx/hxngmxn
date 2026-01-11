@@ -55,11 +55,59 @@ The malware relies on process injection to write the shellcode into memory regio
 
 First, we need to define a target process — for example, notepad.exe — and then use Windows APIs to find its PID. With the PID in hand, we can allocate memory inside that process.
 
-![COMINGSOON]({{ "/assets/img/comingsoon.png" | relative_url }})
+### Searching for the PID !!!
 
+You have defined notepad.exe as your target process, and the next step is to retrieve its Process ID (PID). To achieve this, the code uses CreateToolhelp32Snapshot, a Windows API function that captures a snapshot of all currently running processes on the system. Once the snapshot is created, it is traversed using Process32First and Process32Next, while _wcsicmp is used to perform a case-insensitive comparison of process names in order to identify the target executable.
+
+`C++`
 ```cpp
+DWORD GetNotepadPID() {
+    DWORD pid = 0;
 
+    // Create a snapshot of all running processes
+    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hSnapshot == INVALID_HANDLE_VALUE) {
+        std::cerr << "Failed to create process snapshot\n";
+        return 0;
+    }
+
+    PROCESSENTRY32 pe;
+    pe.dwSize = sizeof(PROCESSENTRY32); // Must be set before calling Process32First
+
+    // Retrieve the first process from the snapshot
+    if (Process32First(hSnapshot, &pe)) {
+        do {
+            // Compare the executable name (case-insensitive)
+            if (_wcsicmp(pe.szExeFile, L"notepad.exe") == 0) {
+                pid = pe.th32ProcessID; // Store the process ID
+                break;
+            }
+        } while (Process32Next(hSnapshot, &pe)); // Move to the next process
+    } else {
+        std::cerr << "Process32First failed\n";
+    }
+
+    // Always close the snapshot handle
+    CloseHandle(hSnapshot);
+
+    return pid;
+}
+
+int main() {
+    DWORD pid = GetNotepadPID();
+
+    if (pid != 0) {
+        std::cout << "notepad.exe found! PID = " << pid << std::endl;
+    } else {
+        std::cout << "notepad.exe is not running.\n";
+    }
+
+    return 0;
+}
 ```
+This code leverages the Windows ToolHelp API to enumerate all running processes by creating a snapshot of the system’s current process state. Using Process32First, it retrieves the first process entry and then iterates through the remaining processes with Process32Next. During this iteration, the code performs a case-insensitive comparison of each process’s executable name against notepad.exe. This approach allows the program to systematically search through all active processes without prior knowledge of their order or quantity.
+
+Once the target process is identified, the corresponding Process ID (PID) is extracted directly from the process entry structure and returned for later use. At no point does the code open or interact with the target process itself; it only reads metadata provided by the operating system. If notepad.exe is not running at the time the snapshot is taken, the function completes gracefully and indicates that no valid PID was found.
 
 ## Request for Shellcode
 
