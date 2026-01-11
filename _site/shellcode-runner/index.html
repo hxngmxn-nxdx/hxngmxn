@@ -20,18 +20,19 @@
   </div>
 </header>
 
-    <div class="layout layout-post">
-  <main class="content content-full">
-    <article class="post">
-      <header class="post-header">
-        <h1 class="post-title">Shellcode Runner C++, basics</h1>
-        <div class="post-meta">2026-01-10</div>
-        
-        <div class="post-project">project: Sliver C2 & Fileless Malware</div>
-        
-      </header>
-      <div class="post-content">
-        <h2 id="introduction">Introduction</h2>
+    <div class="post-shell">
+  <div class="layout layout-post">
+    <main class="content content-full">
+      <article class="post">
+        <header class="post-header">
+          <h1 class="post-title">Shellcode Runner C++, basics</h1>
+          <div class="post-meta">2026-01-10</div>
+          
+          <div class="post-project">project: Sliver C2 & Fileless Malware</div>
+          
+        </header>
+        <div class="post-content">
+          <h2 id="introduction">Introduction</h2>
 
 <p>Hey everyone,</p>
 
@@ -233,9 +234,28 @@ Requests a snapshot of the current process list. When using <code class="languag
 
 <p>The execution phase consists of opening a handle to the target process, allocating memory within its address space, and writing a payload into that memory region. Once the payload is placed, a remote thread is created to transfer execution flow to the injected code. While the APIs involved are publicly documented Windows functions, their correct and safe implementation requires careful memory management, synchronization, and error handling. For this reason, implementation details are intentionally abstracted in this article.</p>
 
-      </div>
-    </article>
-  </main>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  
+  <div class="post-summary-rail" aria-label="Post summary">
+    <aside class="post-summary">
+      <div class="post-summary-title">Post Summary</div>
+      <div class="post-summary-tree">|-- <a href="#introduction">Introduction</a>
+|-- <a href="#system-call-obfuscation">System Call Obfuscation</a>
+|   |-- <a href="#what-this-is-doing">What this is doing</a>
+|   `-- <a href="#reference">Reference</a>
+|-- <a href="#process-injection">Process Injection</a>
+|   `-- <a href="#searching-for-the-pid-">Searching for the PID !!!</a>
+|-- <a href="#request-for-shellcode">Request for Shellcode</a>
+|   `-- <a href="#what-this-is-doing-1">What this is doing</a>
+`-- <a href="#write-and-execute">Write and Execute!</a>
+    `-- <a href="#what-this-is-doing-2">What this is doing</a></div>
+    </aside>
+  </div>
+  
 </div>
 
     <footer class="site-footer">

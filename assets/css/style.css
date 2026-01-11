@@ -6,6 +6,8 @@
   --link-hover: #b7d5ff;
   --border: #1c1c1c;
   --sidebar-width: 230px;
+  --summary-width: 320px;
+  --post-body-width: 760px;
   --gap: 2.5rem;
   --container-width: 1120px;
   --gutter: 2rem;
@@ -180,6 +182,59 @@ a:hover {
   padding-left: 0;
   border-left: none;
   max-width: 760px;
+}
+
+.post-shell {
+  position: relative;
+}
+
+.post-summary-rail {
+  position: absolute;
+  top: 2.5rem;
+  left: 50%;
+  margin-left: calc((var(--post-body-width) / 2) + var(--gap));
+  width: var(--summary-width);
+  height: 100%;
+  pointer-events: none;
+}
+
+.post-summary {
+  position: sticky;
+  top: 2.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  background: #0e0e0e;
+  pointer-events: auto;
+}
+
+.post-summary-title {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.post-summary-tree {
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  white-space: pre;
+}
+
+.post-summary-tree a {
+  color: var(--text);
+}
+
+.post-summary-tree a:hover {
+  color: var(--link-hover);
+}
+
+@media (max-width: 1200px) {
+  .post-summary-rail {
+    display: none;
+  }
 }
 
 .section-title {
