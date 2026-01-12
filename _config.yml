@@ -5,3 +5,4 @@ baseurl: ""
 markdown: kramdown
 permalink: /:title/
 theme: null
+reading_wpm: 225

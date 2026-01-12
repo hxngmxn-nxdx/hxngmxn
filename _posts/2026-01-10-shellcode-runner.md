@@ -3,17 +3,6 @@ title: "Shellcode Runner C++, basics"
 date: 2026-01-10
 layout: post
 project: "Sliver C2 & Fileless Malware"
-summary_tree: |-
-  |-- <a href="#introduction">Introduction</a>
-  |-- <a href="#system-call-obfuscation">System Call Obfuscation</a>
-  |   |-- <a href="#what-this-is-doing">What this is doing</a>
-  |   `-- <a href="#reference">Reference</a>
-  |-- <a href="#process-injection">Process Injection</a>
-  |   `-- <a href="#searching-for-the-pid-">Searching for the PID !!!</a>
-  |-- <a href="#request-for-shellcode">Request for Shellcode</a>
-  |   `-- <a href="#what-this-is-doing-1">What this is doing</a>
-  `-- <a href="#write-and-execute">Write and Execute!</a>
-      `-- <a href="#what-this-is-doing-2">What this is doing</a>
 ---
 
 ## Introduction

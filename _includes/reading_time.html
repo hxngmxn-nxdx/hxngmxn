@@ -1,0 +1,21 @@
+{%- assign wpm = include.wpm | default: site.reading_wpm | default: 225 -%}
+
+{%- assign text = include.content
+  | strip_html
+  | strip_newlines
+  | replace: "&nbsp;", " "
+  | replace: "  ", " "
+-%}
+
+{%- assign words = text | split: " " | size -%}
+
+{%- if words < 1 -%}
+  {%- assign minutes = 1 -%}
+{%- else -%}
+  {%- assign minutes = words | divided_by: wpm -%}
+  {%- assign remainder = words | modulo: wpm -%}
+  {%- if remainder > 0 -%}{%- assign minutes = minutes | plus: 1 -%}{%- endif -%}
+  {%- if minutes < 1 -%}{%- assign minutes = 1 -%}{%- endif -%}
+{%- endif -%}
+
+{{ minutes }} min read

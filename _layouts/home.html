@@ -7,16 +7,33 @@ layout: default
     {% include sidebar.html %}
     <main class="content">
       <div class="section-title">Recent Entries</div>
+      {% assign posts_by_day = site.posts | group_by_exp: "post", "post.date | date: '%Y-%m-%d'" | sort: "name" | reverse %}
+      {% assign max_posts = 5 %}
+      {% assign rendered = 0 %}
       <ul class="post-list">
-        {% for post in site.posts limit:5 %}
-          <li class="post-item">
-            <div class="post-row">
-              <span class="post-date">[{{ post.date | date: "%Y-%m-%d" }}]</span>
-              <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            </div>
-            <div class="post-meta">5 min read</div>
-            <div class="post-separator" aria-hidden="true"></div>
-          </li>
+        {% for day in posts_by_day %}
+          {% if rendered >= max_posts %}
+            {% break %}
+          {% endif %}
+          {% assign day_posts = day.items | sort: "date" | reverse %}
+          {% assign sequenced_posts = day_posts | where_exp: "post", "post.sequence != nil" | sort: "sequence" | reverse %}
+          {% assign unsequenced_posts = day_posts | where_exp: "post", "post.sequence == nil" %}
+          {% assign ordered_day_posts = sequenced_posts | concat: unsequenced_posts %}
+
+          {% for post in ordered_day_posts %}
+            {% if rendered >= max_posts %}
+              {% break %}
+            {% endif %}
+            <li class="post-item">
+              <div class="post-row">
+                <span class="post-date">[{{ post.date | date: "%Y-%m-%d" }}]</span>
+                <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </div>
+              <div class="post-meta">{% include reading_time.html content=post.content %}</div>
+              <div class="post-separator" aria-hidden="true"></div>
+            </li>
+            {% assign rendered = rendered | plus: 1 %}
+          {% endfor %}
         {% endfor %}
       </ul>
       {{ content }}
