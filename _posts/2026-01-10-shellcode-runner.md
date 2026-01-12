@@ -110,7 +110,7 @@ This code leverages the Windows ToolHelp API to enumerate all running processes 
 
 Once the target process is identified, the corresponding Process ID (PID) is extracted directly from the process entry structure and returned for later use. At no point does the code open or interact with the target process itself; it only reads metadata provided by the operating system. If notepad.exe is not running at the time the snapshot is taken, the function completes gracefully and indicates that no valid PID was found.
 
-## Request for Shellcode
+### Request for Shellcode
 
 
 ```cpp
@@ -146,11 +146,11 @@ BOOL Request(BYTE** outPayload, DWORD* outPayloadSize) {
     }
 }
 ```
-### What this is doing
+#### What this is doing
 
 Once a remote resource is successfully opened, data must be read from the network stream. This is typically done using `InternetReadFile`, which operates in a stream-oriented manner and may return partial data on each call. Because of this behavior, the function is usually invoked repeatedly until no more bytes are available. If this logic is implemented correctly within your own codebase, it allows the application to successfully retrieve data from a remote command-and-control Server.
 
-## Write and Execute!
+### Write and Execute!
 
 At this stage, you already have the PID of the target process and the payload retrieved from the C2 server in memory. This concludes the preparation phase of the malware, as the next step is where the actual injection takes place. In the following phase, the payload is injected into the target process and executed, ultimately resulting in an active shell.
 
@@ -201,6 +201,12 @@ void ExecuteRemoteProcessExample(DWORD targetPid) {
 }
 ```
 
-### What this is doing
+#### What this is doing
 
 The execution phase consists of opening a handle to the target process, allocating memory within its address space, and writing a payload into that memory region. Once the payload is placed, a remote thread is created to transfer execution flow to the injected code. While the APIs involved are publicly documented Windows functions, their correct and safe implementation requires careful memory management, synchronization, and error handling. For this reason, implementation details are intentionally abstracted in this article.
+
+## Considerations and Conclusion
+
+There are a few techniques you could implement in this shellcode runner to help with defense evasion—such as writing the payload in small chunks, adding short sleeps between stages, being careful with memory allocation permissions, and so on. But as I mentioned, in this article I only covered a few methods I used in my Shellcode Runner to execute this PoC. Depending on your needs, the sky’s the limit.
+
+If you made it this far, thank you very much. The next step in this project is to observe the detection in a SOC environment—using the well-known open-source Wazuh. See you there.
