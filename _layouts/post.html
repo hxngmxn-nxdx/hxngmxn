@@ -3,6 +3,14 @@ layout: default
 ---
 
 <div class="layout layout-post">
+  <aside class="post-aside">
+    <div class="post-sumary" data-sumary hidden>
+      <div class="sumary-title">sumary</div>
+      <nav class="sumary-nav" aria-label="sumary">
+        <ul class="sumary-list" data-sumary-list></ul>
+      </nav>
+    </div>
+  </aside>
   <main class="content content-full">
     <article class="post">
       <header class="post-header">
@@ -17,4 +25,6 @@ layout: default
       </div>
     </article>
   </main>
+  <div class="post-rail" aria-hidden="true"></div>
 </div>
+<script src="{{ '/assets/js/sumary.js' | relative_url }}"></script>

@@ -174,12 +174,29 @@ a:hover {
 
 .layout-post {
   justify-content: center;
+  align-items: flex-start;
+  gap: var(--gap);
 }
 
 .layout-post .content {
   padding-left: 0;
   border-left: none;
   max-width: 760px;
+  width: 100%;
+  flex: 1;
+}
+
+.post-aside {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 5rem;
+  align-self: flex-start;
+}
+
+.post-rail {
+  width: 80px;
+  flex-shrink: 0;
 }
 
 
@@ -438,6 +455,71 @@ summary::-webkit-details-marker {
   color: var(--text);
 }
 
+.post-sumary {
+  margin: 0 0 2.5rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--border);
+  background: #0e0e0e;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 0.72rem;
+}
+
+.sumary-title {
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.sumary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sumary-link {
+  display: block;
+  color: var(--text);
+  padding: 0.25rem 0.35rem 0.25rem 0;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+}
+
+.sumary-link:hover {
+  color: var(--link-hover);
+  border-color: var(--link);
+  padding-left: 0.2rem;
+}
+
+.sumary-link.level-1 {
+  font-weight: 600;
+  padding-left: 0;
+}
+
+.sumary-link.level-2 {
+  padding-left: 0.6rem;
+}
+
+.sumary-link.level-3 {
+  padding-left: 1.2rem;
+}
+
+.sumary-link.level-4 {
+  padding-left: 1.8rem;
+}
+
+.sumary-link.level-5 {
+  padding-left: 2.4rem;
+}
+
+.sumary-link.level-6 {
+  padding-left: 3rem;
+}
+
 @media (max-width: 900px) {
   .site-header {
     padding: 1.5rem var(--gutter);
@@ -452,8 +534,19 @@ summary::-webkit-details-marker {
     padding: 2rem var(--gutter) 3rem;
   }
 
-  .sidebar {
+  .layout-post {
+    display: block;
+    max-width: 100%;
+  }
+
+  .sidebar,
+  .post-aside {
     width: 100%;
+    position: static;
+  }
+
+  .post-rail {
+    display: none;
   }
 
   .content {

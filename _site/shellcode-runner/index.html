@@ -21,6 +21,14 @@
 </header>
 
     <div class="layout layout-post">
+  <aside class="post-aside">
+    <div class="post-sumary" data-sumary hidden>
+      <div class="sumary-title">sumary</div>
+      <nav class="sumary-nav" aria-label="sumary">
+        <ul class="sumary-list" data-sumary-list></ul>
+      </nav>
+    </div>
+  </aside>
   <main class="content content-full">
     <article class="post">
       <header class="post-header">
@@ -141,7 +149,7 @@ Requests a snapshot of the current process list. When using <code class="languag
 
 <p>Once the target process is identified, the corresponding Process ID (PID) is extracted directly from the process entry structure and returned for later use. At no point does the code open or interact with the target process itself; it only reads metadata provided by the operating system. If notepad.exe is not running at the time the snapshot is taken, the function completes gracefully and indicates that no valid PID was found.</p>
 
-<h2 id="request-for-shellcode">Request for Shellcode</h2>
+<h3 id="request-for-shellcode">Request for Shellcode</h3>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp">
 #include</span> <span class="cpf">&lt;wininet.h&gt;</span><span class="cp">
@@ -175,11 +183,11 @@ Requests a snapshot of the current process list. When using <code class="languag
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<h3 id="what-this-is-doing-1">What this is doing</h3>
+<h4 id="what-this-is-doing-1">What this is doing</h4>
 
 <p>Once a remote resource is successfully opened, data must be read from the network stream. This is typically done using <code class="language-plaintext highlighter-rouge">InternetReadFile</code>, which operates in a stream-oriented manner and may return partial data on each call. Because of this behavior, the function is usually invoked repeatedly until no more bytes are available. If this logic is implemented correctly within your own codebase, it allows the application to successfully retrieve data from a remote command-and-control Server.</p>
 
-<h2 id="write-and-execute">Write and Execute!</h2>
+<h3 id="write-and-execute">Write and Execute!</h3>
 
 <p>At this stage, you already have the PID of the target process and the payload retrieved from the C2 server in memory. This concludes the preparation phase of the malware, as the next step is where the actual injection takes place. In the following phase, the payload is injected into the target process and executed, ultimately resulting in an active shell.</p>
 
@@ -214,7 +222,7 @@ Requests a snapshot of the current process list. When using <code class="languag
     <span class="p">);</span>
 
     <span class="c1">// 5. Create a remote thread in a suspended state</span>
-    <span class="n">HANDLE</span> <span class="n">hThread</span> <span class="o">=</span> <span class="n">CreateRemoteThread</span><span class="p">(</span>
+    <span class="n">HANDLE</span> <span class="n">hThread</span> <span class="o">=</span> <span class="n">CreateRemoteThreadEx</span><span class="p">(</span>
         <span class="n">hProcess</span><span class="p">,</span>
         <span class="nb">NULL</span><span class="p">,</span>
         <span class="mi">0</span><span class="p">,</span>
@@ -229,14 +237,22 @@ Requests a snapshot of the current process list. When using <code class="languag
 <span class="p">}</span>
 </code></pre></div></div>
 
-<h3 id="what-this-is-doing-2">What this is doing</h3>
+<h4 id="what-this-is-doing-2">What this is doing</h4>
 
 <p>The execution phase consists of opening a handle to the target process, allocating memory within its address space, and writing a payload into that memory region. Once the payload is placed, a remote thread is created to transfer execution flow to the injected code. While the APIs involved are publicly documented Windows functions, their correct and safe implementation requires careful memory management, synchronization, and error handling. For this reason, implementation details are intentionally abstracted in this article.</p>
+
+<h2 id="considerations-and-conclusion">Considerations and Conclusion</h2>
+
+<p>There are a few techniques you could implement in this shellcode runner to help with defense evasion—such as writing the payload in small chunks, adding short sleeps between stages, being careful with memory allocation permissions, and so on. But as I mentioned, in this article I only covered a few methods I used in my Shellcode Runner to execute this PoC. Depending on your needs, the sky’s the limit.</p>
+
+<p>If you made it this far, thank you very much. The next step in this project is to observe the detection in a SOC environment—using the well-known open-source Wazuh. See you there.</p>
 
       </div>
     </article>
   </main>
+  <div class="post-rail" aria-hidden="true"></div>
 </div>
+<script src="/assets/js/sumary.js"></script>
 
     <footer class="site-footer">
   <div class="footer-inner">Copyright 2026 hxngmxn</div>

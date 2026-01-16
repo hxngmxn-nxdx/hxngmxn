@@ -186,7 +186,7 @@ void ExecuteRemoteProcessExample(DWORD targetPid) {
     );
 
     // 5. Create a remote thread in a suspended state
-    HANDLE hThread = CreateRemoteThread(
+    HANDLE hThread = CreateRemoteThreadEx(
         hProcess,
         NULL,
         0,
