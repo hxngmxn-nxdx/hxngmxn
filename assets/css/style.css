@@ -6,7 +6,7 @@
   --link-hover: #b7d5ff;
   --border: #1c1c1c;
   --sidebar-width: 230px;
-  --gap: 2.5rem;
+  --gap: 1.8rem;
   --container-width: 1120px;
   --gutter: 2rem;
 }
@@ -42,7 +42,7 @@ a:hover {
 .site-header {
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: 2rem var(--gutter);
+  padding: 1.2rem var(--gutter);
   text-align: center;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -98,13 +98,13 @@ a:hover {
 }
 
 .home {
-  min-height: 60vh;
+  min-height: 0;
 }
 
 .layout {
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: 2.5rem var(--gutter) 3.5rem;
+  padding: 1.4rem var(--gutter) 2rem;
   display: flex;
   gap: var(--gap);
   align-items: flex-start;
@@ -155,7 +155,7 @@ a:hover {
 }
 
 .social {
-  margin-top: 1rem;
+  margin-top: 0.6rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -167,7 +167,7 @@ a:hover {
 }
 
 .certifications {
-  margin-top: 1.2rem;
+  margin-top: 0.7rem;
 }
 
 .certifications-title {
@@ -571,7 +571,7 @@ summary::-webkit-details-marker {
 
 @media (max-width: 900px) {
   .site-header {
-    padding: 1.5rem var(--gutter);
+    padding: 1rem var(--gutter);
   }
 
   .site-subtitle {
@@ -580,7 +580,7 @@ summary::-webkit-details-marker {
 
   .layout {
     flex-direction: column;
-    padding: 2rem var(--gutter) 3rem;
+    padding: 1.3rem var(--gutter) 1.8rem;
   }
 
   .layout-post {
