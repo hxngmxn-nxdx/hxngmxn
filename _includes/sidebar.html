@@ -11,4 +11,28 @@
     <a href="https://github.com/hxngmxn-nxdx">github</a>
     <a href="https://www.linkedin.com/in/ian-thor-rigon-ribeiro-a1691a232/">linkedin</a>
   </nav>
+  <div class="certifications">
+    <div class="certifications-title">certifications</div>
+    {% assign badges = site.static_files | where_exp: "file", "file.path contains '/assets/img/certifications/'" | sort: "path" %}
+    {% assign preferred = "EHEPE.png,EHMDE.png,EHMEC.png,EHREM.png" | split: "," %}
+    <div class="certifications-grid">
+      {% if badges == empty %}
+        <div class="cert-placeholder">Add badges to assets/img/certifications</div>
+      {% else %}
+        {% for name in preferred %}
+          <div class="cert-badge">
+            <img src="{{ '/assets/img/certifications/' | append: name | relative_url }}" alt="{{ name | split: '.' | first }}">
+          </div>
+        {% endfor %}
+        {% for badge in badges %}
+          {% if preferred contains badge.name %}
+            {% continue %}
+          {% endif %}
+          <div class="cert-badge">
+            <img src="{{ badge.path | relative_url }}" alt="{{ badge.name | split: '.' | first }}">
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
 </aside>
