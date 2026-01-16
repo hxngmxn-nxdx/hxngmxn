@@ -1,5 +1,5 @@
 :root {
-  --bg: #0b0b0b;
+  --bg: #080608;
   --text: #cfcfcf;
   --muted: #9a9a9a;
   --link: #8fbaff;
@@ -92,7 +92,7 @@ a:hover {
 .site-footer {
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: 1.5rem var(--gutter) 2.5rem;
+  padding: 1rem var(--gutter) 1.4rem;
   color: var(--muted);
   font-size: 0.85rem;
 }
@@ -104,7 +104,7 @@ a:hover {
 .layout {
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: 1.4rem var(--gutter) 2rem;
+  padding: 1.3rem var(--gutter) 1.6rem;
   display: flex;
   gap: var(--gap);
   align-items: flex-start;
@@ -580,7 +580,7 @@ summary::-webkit-details-marker {
 
   .layout {
     flex-direction: column;
-    padding: 1.3rem var(--gutter) 1.8rem;
+    padding: 1.2rem var(--gutter) 1.6rem;
   }
 
   .layout-post {

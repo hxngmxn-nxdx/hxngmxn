@@ -12,8 +12,9 @@
     <a href="https://www.linkedin.com/in/ian-thor-rigon-ribeiro-a1691a232/">linkedin</a>
   </nav>
   <div class="certifications">
-    <div class="certifications-title">certifications</div>
     {% assign badges = site.static_files | where_exp: "file", "file.path contains '/assets/img/certifications/'" | sort: "path" %}
+    {% assign badge_count = badges | size %}
+    <div class="certifications-title">certifications{% if badge_count > 0 %} ({{ badge_count }}){% endif %}</div>
     {% assign preferred = "EHEPE.png,EHMDE.png,EHMEC.png,EHREM.png" | split: "," %}
     <div class="certifications-grid">
       {% if badges == empty %}
