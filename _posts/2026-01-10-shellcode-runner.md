@@ -16,7 +16,7 @@ I want to start this post by making one thing very clear: I’m not going to sho
 
 System Call Obfuscation, also known as D/Invoke in C#, is a method that can be widely used to call Windows functions at runtime, ele é um metodo que pode ser implementado em qualquer fase do malware que utilize alguma função do Windows.
 
-Abaixo, um exemplo dessa técnica aplicada a função "CreateToolhelp32Snapshot", usada principalmente na técnica de Process Injection
+Below is an example of this technique applied to the CreateToolhelp32Snapshot function, mainly used in Process Injection techniques.
 
 `C++`
 ```cpp
